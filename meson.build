@@ -293,17 +293,17 @@ gd32f350_src = [
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_adc.c',
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_pmu.c',
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_dma.c',
-                'platform/mcu/GD32F350/drivers/gpio.c',
-                'platform/mcu/GD32F350/drivers/delays.cpp',
-                'platform/mcu/GD32F350/drivers/USART0.cpp',
-                'platform/mcu/GD32F350/boot/startup.cpp',
-                'platform/mcu/GD32F350/boot/bsp.cpp',
+                'platform/mcu/GD32F303/drivers/gpio.c',
+                'platform/mcu/GD32F303/drivers/delays.cpp',
+                'platform/mcu/GD32F303/drivers/USART0.cpp',
+                'platform/mcu/GD32F303/boot/startup.cpp',
+                'platform/mcu/GD32F303/boot/bsp.cpp',
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_timer.c',
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_rcu.c',
-                'platform/mcu/GD32F350/boot/libc_integration.cpp']
+                'platform/mcu/GD32F303/boot/libc_integration.cpp']
 
-gd32f350_inc = ['platform/mcu/GD32F350',
-                'platform/mcu/GD32F350/drivers',
+gd32f350_inc = ['platform/mcu/GD32F303',
+                'platform/mcu/GD32F303/drivers',
                 'platform/mcu/CMSIS/Include',
                 'platform/mcu/CMSIS/Device/GD/GD32F30x/Include']
 
@@ -748,7 +748,7 @@ a36plus_opts = {
   'dependencies'       : [codec2_dep],
   'c_args'             : a36plus_args,
   'cpp_args'           : a36plus_args,
-  'link_args'          : ['-Wl,-T../platform/mcu/GD32F350/linker_script.ld',
+  'link_args'          : ['-Wl,-T../platform/mcu/GD32F303/linker_script.ld',
                           '-Wl,--print-memory-usage'],
 }
 
