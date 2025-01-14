@@ -21,7 +21,7 @@
 #include <interfaces/platform.h>
 #include "gd32f30x.h"
 // #include <peripherals/gpio.h>
-#include "../../mcu/GD32F350/drivers/gpio.h"
+#include "../../mcu/GD32F303/drivers/gpio.h"
 #include <hwconfig.h> 
 #include "backlight.h"
 
