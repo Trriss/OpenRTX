@@ -40,7 +40,10 @@ _main_stack_size = 0x00000200;                     /* main stack = 512Bytes */
 _main_stack_top  = 0x20000000 + _main_stack_size;
 ASSERT(_main_stack_size   % 8 == 0, "MAIN stack size error");
 
-_heap_end = 0x20018000;                            /* end of available ram  */
+/*_heap_end = 0x20018000;*/                            /* end of available ram  */
+/*for weact testboard*/
+_heap_end = 0x2000C000;                            /* end of available ram  */
+
 
 /* identify the Entry Point  */
 ENTRY(_Z13Reset_Handlerv)
@@ -49,7 +52,9 @@ ENTRY(_Z13Reset_Handlerv)
 MEMORY
 {
     flash(rx) : ORIGIN = 0x08000000, LENGTH = 508K
-    ram(wx)   : ORIGIN = 0x20000200, LENGTH = 96K - 0x200
+    /*ram(wx)   : ORIGIN = 0x20000200, LENGTH = 96K - 0x200*/
+	/*For Weact gd32f303CCT6 board, only 48K*/
+	ram(wx)   : ORIGIN = 0x20000200, LENGTH = 48K - 0x200
 }
 
 /* now define the output sections  */

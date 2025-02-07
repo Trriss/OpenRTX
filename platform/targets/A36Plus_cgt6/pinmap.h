@@ -28,7 +28,8 @@
 #define LCD_DAT GPIOB, 15
 #define LCD_PWR GPIOB, 7
 #define LCD_RST GPIOB, 12
-#define LCD_CS GPIOB, 2
+//Weact gd32f303CCT6 development board, PB2 not reachable
+#define LCD_CS GPIOB, 1
 #define LCD_DC GPIOB, 10
 
 // LEDs
@@ -71,7 +72,8 @@
 #define MIC_SPK_EN GPIOA, 12
 
 // RF stage
-#define RF_AM_AGC GPIOB, 1
+//Weact gd32f303CCT6 development board, PB2 not reachable
+#define RF_AM_AGC GPIOB, 2
 #define RFV3R_EN GPIOB, 0
 
 #define RFV3T_EN GPIOC, 15
