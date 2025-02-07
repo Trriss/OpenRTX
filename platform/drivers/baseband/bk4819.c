@@ -40,7 +40,13 @@ extern PowerCalibrationTables *calData;
 static void spi_write_byte(uint8_t data)
 {
     BK4819_SCK_LOW;
-    BK4819_SDA_DIR_OUT;
+    #ifdef PLATFORM_A36PLUS_CGT6
+        gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
+    #else
+        BK4819_SDA_DIR_OUT;
+    #endif
+
+
     for (uint8_t i = 0; i < 8; i++)
     {
         if (data & 0x80)
@@ -65,7 +71,12 @@ static void spi_write_half_word(uint16_t data)
 static uint16_t spi_read_half_word(void)
 {
     uint16_t data = 0;
-    BK4819_SDA_DIR_IN;
+    #ifdef PLATFORM_A36PLUS_CGT6
+        gpio_init(GPIOA, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
+    #else
+        BK4819_SDA_DIR_IN;
+    #endif
+
     BK4819_SCK_LOW;
     for (uint8_t i = 0; i < 16; i++)
     {

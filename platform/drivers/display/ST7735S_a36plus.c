@@ -24,7 +24,13 @@
 #include <peripherals/gpio.h>
 #include <hwconfig.h>
 #include <stddef.h>
-#include "gd32f3x0.h"
+
+#ifdef PLATFORM_A36PLUS_CGT6
+    #include <gd32f30x.h>
+#else
+    #include "gd32f3x0.h"
+#endif
+
 #include <graphics.h>
 
 enum ST7735S_command

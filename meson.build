@@ -324,6 +324,38 @@ gd32f330_inc = ['platform/mcu/GD32F330',
 
 gd32f330_def = {'GD32F330':''}
 
+
+##
+## gd32f303
+##
+
+gd32f303_src = [
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/system_gd32f30x.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_misc.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_gpio.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_usart.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_spi.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_rtc.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_adc.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_pmu.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_dma.c',
+    'platform/mcu/GD32F303/drivers/gpio.c',
+    'platform/mcu/GD32F303/drivers/delays.cpp',
+    'platform/mcu/GD32F303/drivers/USART0.cpp',
+    'platform/mcu/GD32F303/boot/startup.cpp',
+    'platform/mcu/GD32F303/boot/bsp.cpp',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_timer.c',
+    'platform/mcu/CMSIS/Device/GD/GD32F30x/Source/gd32f30x_rcu.c',
+    'platform/mcu/GD32F303/boot/libc_integration.cpp']
+
+gd32f303_inc = ['platform/mcu/GD32F303',
+                'platform/mcu/GD32F303/drivers',
+                'platform/mcu/CMSIS/Include',
+                'platform/mcu/CMSIS/Device/GD/GD32F30x/Include']
+
+gd32f303_def = {'GD32F30X_XD':''}
+
+
 ##
 ## ----------------------- Platform specializations ----------------------------
 ##
@@ -518,7 +550,7 @@ rt890_def += openrtx_def + at32f421_def + miosix_cm4_def
 
 
 ##
-## Talkpod A36Plus
+## Talkpod A36Plus (Original GD32F330)
 ##
 
 a36plus_src = ['platform/drivers/baseband/bk4819.c',
@@ -544,6 +576,37 @@ a36plus_def = {'PLATFORM_A36PLUS': ''}
 a36plus_src += openrtx_src + gd32f330_src + miosix_cm4f_src + ui_src_default
 a36plus_inc += openrtx_inc + gd32f330_inc + miosix_cm4f_inc
 a36plus_def += openrtx_def + gd32f330_def + miosix_cm4f_def
+
+
+##
+## Talkpod A36Plus - Modified MCU GD32F303CGT6
+##
+
+a36plus_cgt6_src = ['platform/drivers/baseband/bk4819.c',
+               'platform/targets/A36Plus_cgt6/platform.c',
+               'platform/drivers/display/ST7735S_a36plus.c',
+               'platform/drivers/keyboard/keyboard_a36plus.c',
+               'platform/drivers/audio/audio_A36Plus.c',
+               'platform/drivers/CPS/cps_io_native_A36plus.c',
+               'platform/drivers/NVM/W25Qx.c',
+               'platform/drivers/NVM/nvmem_A36Plus.c',
+               'platform/drivers/NVM/spiFlash_A36plus.c',
+               'platform/drivers/ADC/ADC0_A36plus.c',
+               'platform/drivers/baseband/bk1080.c',
+               #'openrtx/src/rtx/OpMode_WFM.cpp',
+               'platform/drivers/backlight/backlight_A36Plus.c',
+               'platform/drivers/baseband/radio_A36Plus.cpp']
+
+a36plus_cgt6_inc = ['platform/drivers/baseband',
+               'platform/targets/A36Plus_cgt6']
+
+a36plus_cgt6_def = {'PLATFORM_A36PLUS': '', 'PLATFORM_A36PLUS_CGT6': ''}
+
+a36plus_cgt6_src += openrtx_src + gd32f303_src + miosix_cm4f_src + ui_src_default
+a36plus_cgt6_inc += openrtx_inc + gd32f303_inc + miosix_cm4f_inc
+a36plus_cgt6_def += openrtx_def + gd32f303_def + miosix_cm4f_def
+
+
 
 ##
 ## -------------------------- Compilation arguments ----------------------------
@@ -658,6 +721,15 @@ foreach k, v : a36plus_def
   endif
 endforeach
 
+a36plus_cgt6_args = []
+foreach k, v : a36plus_cgt6_def
+    if v == ''
+        a36plus_cgt6_args += '-D@0@'.format(k)
+    else
+        a36plus_cgt6_args += '-D@0@=@1@'.format(k, v)
+    endif
+endforeach
+
 linux_opts = {
   'sources'            : linux_default_src,
   'include_directories': linux_inc,
@@ -765,6 +837,17 @@ a36plus_opts = {
                           '-Wl,--print-memory-usage'],
 }
 
+a36plus_cgt6_opts = {
+    'sources'            : a36plus_cgt6_src,
+    'include_directories': a36plus_cgt6_inc,
+    'dependencies'       : [codec2_dep],
+    'c_args'             : a36plus_cgt6_args,
+    'cpp_args'           : a36plus_cgt6_args,
+    'link_args'          : ['-Wl,-T../platform/mcu/GD32F303/linker_script.ld',
+                            '-Wl,--print-memory-usage'],
+}
+
+
 ttwrplus_opts = {
   'sources'            : ['CMakeLists.txt'],
   'include_directories': [],
@@ -849,6 +932,13 @@ targets = [
     'flashable': true,
     'wrap'     : ' ',
     'load_addr': ' '
+  },
+  {
+      'name'     : 'a36plus_cgt6',
+      'opts'     : a36plus_cgt6_opts,
+      'flashable': true,
+      'wrap'     : ' ',
+      'load_addr': ' '
   },
   {
     'name'     : 'ttwrplus',
@@ -1001,7 +1091,27 @@ foreach t : targets
           custom_target(name+'_flash',
                         input   : wrap,
                         output  : name+'_flash',
-                        command : [rtxflash, 'flash', 'A36Plus', '/dev/ttyUSB0', '@INPUT@'])  
+                        command : [rtxflash, 'flash', 'A36Plus', '/dev/ttyUSB0', '@INPUT@'])
+
+
+      # a36plus_cgt6 handling
+      elif name == 'openrtx_a36plus_cgt6'
+
+          # Wrap target for a36plus_cgt6 for consistency, same output as bin target
+          # Wrapping is done by "rtxflash wrap a36plus_cgt6 [input] [output.kdhx]
+          wrap = custom_target(name+'_wrap',
+                               output  : name+'_wrap.kdhx',
+                               input   : bin,
+                               command : [rtxflash, 'wrap', 'a36plus_cgt6', '@INPUT@', '@OUTPUT@'])
+
+          # Flash target for a36plus_cgt6
+          # rtxflash flash a36plus_cgt6 [serialport] [input.kdhx]
+          # FIXME: The serial port should be a parameter!
+          custom_target(name+'_flash',
+                        input   : wrap,
+                        output  : name+'_flash',
+                        command : [rtxflash, 'flash', 'a36plus_cgt6', '/dev/ttyUSB0', '@INPUT@'])
+
       else
 
         wrap = custom_target(name+'_wrap',

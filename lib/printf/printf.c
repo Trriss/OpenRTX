@@ -32,10 +32,15 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <platform/mcu/GD32F330/drivers/USART0.h>
+
+#ifdef PLATFORM_A36PLUS_CGT6
+    #include <platform/mcu/GD32F303/drivers/USART0.h>
+#else
+    #include <platform/mcu/GD32F330/drivers/USART0.h>
+#endif
+
 
 #include "printf.h"
-
 
 // define this globally (e.g. gcc -DPRINTF_INCLUDE_CONFIG_H ...) to include the
 // printf_config.h header file
