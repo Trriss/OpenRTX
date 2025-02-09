@@ -65,7 +65,11 @@ void nvm_dumpFlash()
     uint8_t buf[16];
     // there's no printf, so use sprintf to write to a buffer and then write the buffer to UART
     char str[64];
-    for(uint32_t i = 0xA0000; i < 0xA9000; i += 16)
+	
+	sprintf(str, "\r\n READING NVMEM \r\n ");
+    usart0_IRQwrite(str);
+	
+    for(uint32_t i = 0; i < 0x200000; i += 16)
     {
         W25Qx_readData(i, buf, 16);
         sprintf(str, "\r\nx%08X ", i);

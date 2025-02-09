@@ -81,7 +81,7 @@ void platform_init()
     spi_config();
     backlight_init();
     nvm_init();         // Initialize nonvolatile memory
-    //nvm_dumpFlash();
+    nvm_dumpFlash();
     //rtc_initialize();   // Initialize the RTC peripheral
     gpio_setMode(AIN_VBAT, ANALOG);
     adc0_init();
